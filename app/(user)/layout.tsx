@@ -4,6 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { Manrope } from 'next/font/google';
 import Header from "@/components/Header";
+import { SanityLive } from "@/sanity/lib/live";
+import Provider from "@/components/Schematic/SchematicProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -24,12 +26,15 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html lang="en">
+      <Provider>
       <body
         className={`${manrope.variable} antialiased`}
       >
         <Header />
         {children}
       </body>
+      <SanityLive /> 
+      </Provider>
     </html>
     </ClerkProvider>
   );

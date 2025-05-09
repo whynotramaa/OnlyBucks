@@ -3,19 +3,41 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from './ui/button'
 import { HeartIcon } from 'lucide-react'
+import { getSiteSettings } from '@/sanity/lib/siteSettings/getSiteSettings'
+import Image from 'next/image'
+import { urlFor } from '@/sanity/lib/image'
 
-function Header() {
+async function Header() {
+
+  const siteSettings = await getSiteSettings();
+
+  // console.log(siteSettings)
+
   return (
     <header className='flex justify-between p-4 border-b border-1 mb-2'>
       {/* left side */}
       <Link href="/">
-        <h2 className='text-lg font-bold uppercase  '>Creator Page</h2>
+        {siteSettings?.headerLogo ? (
+            <Image src={urlFor(siteSettings?.headerLogo).url()} 
+            alt={siteSettings.headerLogo.alt || "Logo"}
+            height={40}
+            width={40}
+
+            />
+        ) : (
+        <h2>{siteSettings?.title} </h2>
+        )}
       </Link>
 
       {/* right side */}
       <div>
+        
         <SignedIn>
+          <div className='flex items-center gap-2 hover:gap-4 p-2 hover:px-4 hover:bg-gray-100 transition-all duration-200 border border-gray-200 rounded-full'>
+        {/* Current Tier Badge */}
+        
           <UserButton />
+          </div>
         </SignedIn>
 
         <SignedOut>
