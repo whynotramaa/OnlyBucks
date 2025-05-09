@@ -1,4 +1,5 @@
 import { getTemporaryAccessToken } from "@/actions/getTempAccessToken"
+import SchematicEmbedComponent from "./SchematicEmbedComponent"
 
 async function SchematicWrapper({componentId}: {componentId: string}) {
   
@@ -10,7 +11,7 @@ async function SchematicWrapper({componentId}: {componentId: string}) {
   
     return (
     <SchematicEmbedComponent
-        accessToken = {accessToken}
+        accessToken = {accesstoken}
         componentId = {componentId}
     />
   )
