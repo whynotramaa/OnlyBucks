@@ -3,9 +3,9 @@ import SchematicEmbedComponent from "./SchematicEmbedComponent"
 
 async function SchematicWrapper({componentId}: {componentId: string}) {
   
-    const token = await getTemporaryAccessToken
+    const accesstoken = await getTemporaryAccessToken()
 
-    if(!token){
+    if(!accesstoken){
         throw new Error("No access token found for the user")
     }
   

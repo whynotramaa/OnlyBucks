@@ -6,6 +6,7 @@ import { HeartIcon } from 'lucide-react'
 import { getSiteSettings } from '@/sanity/lib/siteSettings/getSiteSettings'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
+import CurrentTierBadge from './Badge/CurrentTierBadge'
 
 async function Header() {
 
@@ -35,6 +36,7 @@ async function Header() {
         <SignedIn>
           <div className='flex items-center gap-2 hover:gap-4 p-2 hover:px-4 hover:bg-gray-100 transition-all duration-200 border border-gray-200 rounded-full'>
         {/* Current Tier Badge */}
+        <CurrentTierBadge />
         
           <UserButton />
           </div>
