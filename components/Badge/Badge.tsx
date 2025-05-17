@@ -5,15 +5,15 @@ import Link from 'next/link';
 
 interface BadgeProps{
     variant: "interactive"|"simple";
-    tier: TierAccess;
+    tierAccess: TierAccess;
     className?:string;
     link?:string
 }
 
-function Badge( {variant = "simple", tier,className, link} : BadgeProps ) {
+function Badge( {variant = "simple", tierAccess,className, link} : BadgeProps ) {
 
     const baseStyles = "px-3 py-1 rounded-full text-sm font-medium"
-    const level = tierMap[tier];
+    const level = tierMap[tierAccess];
     const label = membershipMap[level];
     const badgeColor = getBadgeColor(level);
 

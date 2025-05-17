@@ -6,6 +6,8 @@ import { Manrope } from 'next/font/google';
 import Header from "@/components/Header";
 import { SanityLive } from "@/sanity/lib/live";
 import Provider from "@/components/Schematic/SchematicProvider";
+import { Toaster } from "sonner";
+import DMButton from "@/components/DMButton";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -25,17 +27,23 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <Provider>
-      <body
-        className={`${manrope.variable} antialiased`}
-      >
-        <Header />
-        {children}
-      </body>
-      <SanityLive /> 
-      </Provider>
-    </html>
+      <html lang="en" className="overflow-y-scroll scrollbar-hide">
+        <Provider>
+          <body
+            className={`${manrope.variable} antialiased overflow-y-scroll scrollbar-hide`}
+          >
+            <Header />
+            {children}
+
+            <div className="fixed bottom-4 right-8">
+              <DMButton />
+            </div>
+            <Toaster position="bottom-center" />
+
+          </body>
+          <SanityLive />
+        </Provider>
+      </html>
     </ClerkProvider>
   );
 }

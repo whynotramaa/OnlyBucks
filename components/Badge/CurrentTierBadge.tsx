@@ -13,7 +13,7 @@ function CurrentTierBadge() {
 
     const tierAccess = getTierFromLevel(membership)
 
-  return <Badge variant="interactive" tier={tierAccess} link="/pricing" />
+  return <Badge variant="interactive" tierAccess={tierAccess} link="/pricing" />
 }
 
 export default CurrentTierBadge

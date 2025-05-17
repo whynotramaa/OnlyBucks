@@ -74,6 +74,94 @@ export type Slug = {
   source?: string;
 };
 
+export type Message = {
+  _id: string;
+  _type: "message";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  senderName?: string;
+  senderEmail?: string;
+  messageBody?: string;
+  isRead?: boolean;
+};
+
+export type Comment = {
+  _id: string;
+  _type: "comment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  post?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "post";
+  };
+  name?: string;
+  email?: string;
+  userImage?: string;
+  comment?: string;
+  approved?: boolean;
+  createdAt?: string;
+};
+
+export type Post = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  tierAccess?: "Normies" | "Insiders" | "Homies";
+  coverImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  galleryImages?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -197,8 +285,240 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Slug | SiteSettings | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Slug | Message | Comment | Post | SiteSettings | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./sanity/lib/posts/getPost.ts
+// Variable: getPostQuery
+// Query: *[_type == "post" && _id == $id][0]{  ...,  "comments": *[_type == "comment" && post._ref == $id] | order(createdAt desc)}
+export type GetPostQueryResult = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  tierAccess?: "Homies" | "Insiders" | "Normies";
+  coverImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  galleryImages?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  comments: Array<{
+    _id: string;
+    _type: "comment";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    post?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "post";
+    };
+    name?: string;
+    email?: string;
+    userImage?: string;
+    comment?: string;
+    approved?: boolean;
+    createdAt?: string;
+  }>;
+} | null;
+
+// Source: ./sanity/lib/posts/getPosts.ts
+// Variable: getPostsQuery
+// Query: *[_type == "post"] | order(_createdAt desc){        ...,        "comments": *[_type == "comment" && post._ref == ^.id] | order(createdAt desc)    }
+export type GetPostsQueryResult = Array<{
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  tierAccess?: "Homies" | "Insiders" | "Normies";
+  coverImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  galleryImages?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  comments: Array<{
+    _id: string;
+    _type: "comment";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    post?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "post";
+    };
+    name?: string;
+    email?: string;
+    userImage?: string;
+    comment?: string;
+    approved?: boolean;
+    createdAt?: string;
+  }>;
+}>;
+// Variable: getPostsQueryWithTier
+// Query: *[_type == "post" && tierAccess == $tier] | order(_createdAt desc) {  ...,  "comments": *[_type == "comment" && post._ref == ^._id] | order(_createdAt desc)}
+export type GetPostsQueryWithTierResult = Array<{
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  tierAccess?: "Homies" | "Insiders" | "Normies";
+  coverImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  galleryImages?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  comments: Array<{
+    _id: string;
+    _type: "comment";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    post?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "post";
+    };
+    name?: string;
+    email?: string;
+    userImage?: string;
+    comment?: string;
+    approved?: boolean;
+    createdAt?: string;
+  }>;
+}>;
+
 // Source: ./sanity/lib/siteSettings/getSiteSettings.ts
 // Variable: siteSettingsQuery
 // Query: *[_type == "siteSettings"][0]{    ...,    headerLogo{      ...,      asset->    },    mainHeroImage{      ...,      asset-> {      _id, url      }    },    logo{      ...,      asset->    }  }
@@ -302,6 +622,9 @@ export type SiteSettingsQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    "*[_type == \"post\" && _id == $id][0]{\n  ...,\n  \"comments\": *[_type == \"comment\" && post._ref == $id] | order(createdAt desc)\n}": GetPostQueryResult;
+    "*[_type == \"post\"] | order(_createdAt desc){\n        ...,\n        \"comments\": *[_type == \"comment\" && post._ref == ^.id] | order(createdAt desc)\n    }": GetPostsQueryResult;
+    "*[_type == \"post\" && tierAccess == $tier] | order(_createdAt desc) {\n  ...,\n  \"comments\": *[_type == \"comment\" && post._ref == ^._id] | order(_createdAt desc)\n}": GetPostsQueryWithTierResult;
     "\n  *[_type == \"siteSettings\"][0]{\n    ...,\n    headerLogo{\n      ...,\n      asset->\n    },\n    mainHeroImage{\n      ...,\n      asset-> {\n      _id, url\n      }\n    },\n    logo{\n      ...,\n      asset->\n    }\n  }\n": SiteSettingsQueryResult;
   }
 }
