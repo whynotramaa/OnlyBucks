@@ -1,5 +1,5 @@
 import Badge from './Badge/Badge'
-import { membershipMap, TierAccess } from '@/types/types'
+import { TierAccess } from '@/types/types'
 
 interface TierBAdgeProps {
     tierAccess: TierAccess;

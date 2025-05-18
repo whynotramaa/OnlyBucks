@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import Badge from './Badge/Badge'
 import { PortableText } from '@portabletext/react'
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon, MessageCircleIcon } from 'lucide-react'
+import { ArrowRightCircleIcon, MessageCircleIcon } from 'lucide-react'
 import CreatedAt from './CreatedAt'
 
 
@@ -19,6 +19,8 @@ import CreatedAt from './CreatedAt'
 function Post({ post }: { post: GetPostsQueryResult[number] }) {
     const membershipTier = useMembershipTier()
     const { user } = useUser()
+    
+
 
     const postMembershipLevel = tierMap[post.tierAccess as TierAccess]
     const isLocked = membershipTier && membershipTier < postMembershipLevel;
@@ -54,6 +56,7 @@ function Post({ post }: { post: GetPostsQueryResult[number] }) {
     if (isLocked) return <LockedPost post={post} />
 
     return (
+        // setComment("");
         <div>
             <Link href={`/post/${post._id}`}>
                 <article className='bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 group cursor-pointer relative'>
@@ -91,7 +94,7 @@ function Post({ post }: { post: GetPostsQueryResult[number] }) {
                         <div className="flex items-center justify-between mt-6">
                             <div className="text-sm text-gray-500 text-right border border-gray-200 rounded-full px-4 py-1 flex items-center gap-2">
                                 <MessageCircleIcon className="w-4 h-4" />
-                                {post.comments?.length} comments
+                                {post.comments.length + 2} comments
                             </div>
                             <div className="text-sm text-gray-500 text-right">
                                 <CreatedAt date={post._createdAt} />

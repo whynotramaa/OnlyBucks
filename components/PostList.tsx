@@ -9,7 +9,7 @@ async function PostList({posts}: { posts: GetPostsQueryWithTierResult }) {
     const siteSettings = await getSiteSettings()
   return (
     <section className='my-8 px-4'>
-    <div className='mx-auto max-w-3xl'>
+    <div className='mx-auto max-w-6xl'> {/* Increased max width to accommodate the grid */}
         <h2 className='text-2xl font-bold mb-8 text-center'>
             Recent Posts by {siteSettings?.title}
         </h2>
@@ -18,14 +18,13 @@ async function PostList({posts}: { posts: GetPostsQueryWithTierResult }) {
             <FilterTierBySelect />
         </div>
 
-<div className="grid grid-cols-1 gap-6">
-<ClerkLoaded>
-    {posts.map((post) => (
-        <Post key={post._id} post={post} />
-    ))}
-</ClerkLoaded>
-</div>
-
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
+            <ClerkLoaded>
+                {posts.map((post) => (
+                    <Post key={post._id} post={post} />
+                ))}
+            </ClerkLoaded>
+        </div>
     </div>
     </section>
   )

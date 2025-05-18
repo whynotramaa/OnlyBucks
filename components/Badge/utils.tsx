@@ -1,5 +1,5 @@
 import { MembershipLevel } from "@/types/types";
-import { Crown, CrownIcon, Star, StarIcon, User, User2Icon } from "lucide-react";
+import {  CrownIcon,  StarIcon, User2Icon } from "lucide-react";
 
 export const getBadgeColor = (tier: MembershipLevel) => {
   console.log(typeof tier, tier); // You’ll probably see "string" and "2" or "3"

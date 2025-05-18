@@ -18,7 +18,7 @@ async function InfoPannel() {
                     alt='logo'
                     width={172}
                     height={172}
-                    className='rounded-lg z-50'
+                    className='rounded-full z-50'
                 />
             )}
 

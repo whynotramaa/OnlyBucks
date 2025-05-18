@@ -2,10 +2,8 @@
 
 
 import { currentUser } from '@clerk/nextjs/server';
-import { Message } from './../sanity.types';
 import { client } from '@/lib/schematic';
 import { adminClient } from '@/sanity/lib/adminClient';
-import message from '@/sanity/schemaTypes/message';
 
 export async function sendMessage(message:string) {
     const user = await currentUser();

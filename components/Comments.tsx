@@ -4,7 +4,7 @@ import useMembershipTier from '@/hooks/useMembershipTier'
 import { GetPostQueryResult } from '@/sanity.types'
 import { tierMap } from '@/types/types';
 import { useUser } from '@clerk/nextjs';
-import React, { startTransition, useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
@@ -50,13 +50,14 @@ function Comments({ post }: { post: GetPostQueryResult }) {
             {/* comment input box */}
             <form onSubmit={handleSubmit} className='mt-6'>
                 <div className="flex items-start gap-4 bg-white rounded-lg p-2 md:p-6">
-                    <Avatar>
-                        <AvatarImage src={user?.imageUrl} />
-                        <AvatarFallback>
+                    <Avatar className="h-10 w-10 rounded-full ring-2 ring-blue-500 shadow-sm">
+                        <AvatarImage src={'/default-avatar.png'} alt="Your avatar" />
+                        <AvatarFallback className="text-sm font-medium text-white bg-blue-500">
                             {user?.firstName?.charAt(0)}
                             {user?.lastName?.charAt(0)}
                         </AvatarFallback>
                     </Avatar>
+
 
                     <div className="flex-1">
                         <Textarea
@@ -117,35 +118,36 @@ function Comments({ post }: { post: GetPostQueryResult }) {
 
 
                 {post?.comments.map((comment) => (
-                    <div key={comment._id} className='flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm' >
-
-                        <Avatar>
-                            <AvatarImage src={user?.imageUrl} />
-                            <AvatarFallback>
-                                {comment.name?.charAt(0)}
-                                {comment.name?.charAt(0)}
+                    <div
+                        key={comment._id}
+                        className="flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-200"
+                    >
+                        <Avatar className="h-9 w-9">
+                            <AvatarImage
+                                src={comment.userImage || "/default-avatar.png"}
+                                alt={`${comment.name}'s avatar`}
+                            />
+                            <AvatarFallback className="bg-gray-100 text-gray-600 text-sm font-medium">
+                                {comment.name?.charAt(0).toUpperCase()}
+                                {comment.name?.charAt(1)?.toUpperCase() || ""}
                             </AvatarFallback>
                         </Avatar>
+
                         <div className="flex-1">
-                            <div className="flex items-baseline gap-2">
-                                <h4 className='font-medium text-gray-900'>
-                                    {comment.name}
-                                </h4>
+                            <div className="flex items-center gap-2 mb-1">
+                                <h4 className="text-sm font-medium text-gray-900">{comment.name}</h4>
                                 {comment._createdAt && (
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-gray-400">
                                         <TimeAgo date={comment._createdAt} />
-                                    </span>)}
+                                    </span>
+                                )}
                             </div>
-
-                            <p className="text-gray-700 mt-1">
-                                {comment.comment}
-                            </p>
-
+                            <p className="text-sm text-gray-700">{comment.comment}</p>
                         </div>
-
-
                     </div>
+
                 ))}
+
             </div>
 
 
